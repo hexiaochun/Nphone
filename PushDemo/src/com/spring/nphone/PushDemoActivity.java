@@ -10,6 +10,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -19,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.android.pushservice.CustomPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
@@ -116,6 +120,30 @@ public class PushDemoActivity extends ActionBarActivity implements View.OnClickL
         PushManager.setNotificationBuilder(this, 1, cBuilder);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main_activity_actions, menu);
+    	return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+		case R.id.action_settings:
+		{
+			Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
+			
+		}
+			break;
+		default:
+			break;
+		}
+    	
+    	
+    	return super.onOptionsItemSelected(item);
+    }
+    
     @Override
     public void onClick(View v) {
         if (v.getId() == akBtnId) {
