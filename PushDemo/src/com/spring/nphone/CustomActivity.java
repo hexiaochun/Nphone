@@ -1,4 +1,4 @@
-package com.baidu.push.example;
+package com.spring.nphone;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 /**
  * 
  * 推送通知时，自定义打开行为的演示activity。 请在控制台通知推送界面中，高级设置->通知后续行为->自定义打开行为，选中并且填写内容：
- * intent:#Intent;component=com.baidu.push.example/com.baidu.push.example.
+ * intent:#Intent;component=com.spring.nphone/com.spring.nphone.
  * CustomActivity;end 确认推送后，手机将会收到通知，点击通知后，将打开CustomActivity
  * 
  * 用服务端rest api或者sdk推送的朋友，可以通过设置推送方法的open_type和pkg_content参数来实现。具体见api文档

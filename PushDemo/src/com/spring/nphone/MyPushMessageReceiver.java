@@ -1,4 +1,4 @@
-package com.baidu.push.example;
+package com.spring.nphone;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

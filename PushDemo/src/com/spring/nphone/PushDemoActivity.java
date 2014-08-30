@@ -1,15 +1,14 @@
-package com.baidu.push.example;
+package com.spring.nphone;
 
-import java.util.Calendar;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -29,7 +28,7 @@ import com.baidu.android.pushservice.PushManager;
  * 云推送Demo主Activity。
  * 代码中，注释以Push标注开头的，表示接下来的代码块是Push接口调用示例
  */
-public class PushDemoActivity extends Activity implements View.OnClickListener {
+public class PushDemoActivity extends ActionBarActivity implements View.OnClickListener {
 
     private static final String TAG = PushDemoActivity.class.getSimpleName();
     RelativeLayout mainLayout = null;

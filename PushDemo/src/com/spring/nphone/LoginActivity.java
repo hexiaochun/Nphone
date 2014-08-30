@@ -1,4 +1,4 @@
-package com.baidu.push.example;
+package com.spring.nphone;
 
 import android.app.Activity;
 import android.content.Intent;
