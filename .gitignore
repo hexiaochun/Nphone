@@ -34,3 +34,12 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+android-support-v7-appcompat/bin/
+android-support-v7-appcompat/gen/
+android-support-v7-mediarouter/bin/
+android-support-v7-mediarouter/gen/
+android-support-v7-gridlayout/bin/
+android-support-v7-gridlayout/gen/
+PushDemo/bin/
+PushDemo/gen/
