@@ -95,6 +95,12 @@ public class BaiduServiceClient {
 
 	}
 
+	/**
+	 * 推送tag消息
+	 * 
+	 * @param tagname
+	 * @param content
+	 */
 	public void pushTagMessage(String tagname, String content) {
 
 		ChannelKeyPair pair = new ChannelKeyPair(apiKey, secretKey);
@@ -178,10 +184,10 @@ public class BaiduServiceClient {
 		}
 	}
 
+	/*
+	 * @brief 推送单播消息(消息类型为透传，由开发方应用自己来解析消息内容) message_type = 0 (默认为0)
+	 */
 	public void pushMessage(User user, String content) {
-		/*
-		 * @brief 推送单播消息(消息类型为透传，由开发方应用自己来解析消息内容) message_type = 0 (默认为0)
-		 */
 
 		// 1. 设置developer平台的ApiKey/SecretKey
 		ChannelKeyPair pair = new ChannelKeyPair(apiKey, secretKey);
@@ -235,7 +241,7 @@ public class BaiduServiceClient {
 			@Override
 			public void onHandle(YunLogEvent event) {
 				// TODO Auto-generated method stub
-				Log.i(TAG,event.getMessage());
+				Log.i(TAG, event.getMessage());
 			}
 		});
 
@@ -254,7 +260,7 @@ public class BaiduServiceClient {
 				long channelId = bindInfo.getChannelId();
 				String userId = bindInfo.getUserId();
 				int status = bindInfo.getBindStatus();
-				Log.i(TAG,"channel_id:" + channelId + ", user_id: " + userId + ", status: " + status);
+				Log.i(TAG, "channel_id:" + channelId + ", user_id: " + userId + ", status: " + status);
 
 				String bindName = bindInfo.getBindName();
 				long bindTime = bindInfo.getBindTime();
@@ -263,9 +269,9 @@ public class BaiduServiceClient {
 				long timestamp = bindInfo.getOnlineTimestamp();
 				long expire = bindInfo.getOnlineExpires();
 
-				Log.i(TAG,"bind_name:" + bindName + "\t" + "bind_time:" + bindTime);
-				Log.i(TAG,"device_type:" + deviceType + "\tdeviceId" + deviceId);
-				Log.i(TAG,String.format("timestamp: %d, expire: %d", timestamp, expire));
+				Log.i(TAG, "bind_name:" + bindName + "\t" + "bind_time:" + bindTime);
+				Log.i(TAG, "device_type:" + deviceType + "\tdeviceId" + deviceId);
+				Log.i(TAG, String.format("timestamp: %d, expire: %d", timestamp, expire));
 			}
 
 		} catch (ChannelClientException e) {
@@ -273,7 +279,7 @@ public class BaiduServiceClient {
 			e.printStackTrace();
 		} catch (ChannelServerException e) {
 			// 处理服务端错误异常
-			Log.i(TAG,String.format("request_id: %d, error_code: %d, error_message: %s", e.getRequestId(), e.getErrorCode(), e.getErrorMsg()));
+			Log.i(TAG, String.format("request_id: %d, error_code: %d, error_message: %s", e.getRequestId(), e.getErrorCode(), e.getErrorMsg()));
 		}
 
 	}

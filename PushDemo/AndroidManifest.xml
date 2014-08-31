@@ -34,6 +34,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.spring.nphone.NotifyClickActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:parentActivityName="com.spring.nphone.PushDemoActivity"
+            >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.spring.nphone.PushDemoActivity" />
+        </activity>
+         <activity android:name="com.spring.nphone.DeviceListActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:parentActivityName="com.spring.nphone.PushDemoActivity"
+            >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.spring.nphone.PushDemoActivity" />
+        </activity>
+         <activity android:name="com.spring.nphone.AddDevice"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:parentActivityName="com.spring.nphone.DeviceListActivity"
+            >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.spring.nphone.DeviceListActivity" />
+        </activity>
         <activity
             android:name="com.spring.nphone.LoginActivity"
             android:configChanges="orientation|keyboardHidden"

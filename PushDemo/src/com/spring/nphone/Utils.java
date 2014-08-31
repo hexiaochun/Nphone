@@ -3,6 +3,8 @@ package com.spring.nphone;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.spring.nphone.domain.User;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -28,6 +30,8 @@ public class Utils {
 
     public static String logStringCache = "";
 
+    public static User user = null;
+    
     // 获取ApiKey
     public static String getMetaValue(Context context, String metaKey) {
         Bundle metaData = null;

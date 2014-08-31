@@ -13,6 +13,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.frontia.api.FrontiaPushMessageReceiver;
+import com.google.gson.Gson;
+import com.spring.nphone.domain.NotifyObject;
+import com.spring.nphone.domain.User;
 
 /**
  * Push消息处理receiver。请编写您需要的回调函数， 一般来说： onBind是必须的，用来处理startWork返回值；
@@ -68,6 +71,11 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
 
+        User  user = new User();
+        user.setChannelId(Long.parseLong(channelId));
+        user.setUserId(userId);
+        Utils.user = user;
+        
         // 绑定成功，设置已绑定flag，可以有效的减少不必要的绑定请求
         if (errorCode == 0) {
             Utils.setBind(context, true);
@@ -131,23 +139,28 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
                 + description + "\" customContent=" + customContentString;
         Log.d(TAG, notifyString);
 
+        Intent intent = new Intent();
+        intent.setClass(context, NotifyClickActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(NotifyClickActivity.JSONSTR, customContentString);
+        context.startActivity(intent);
         // 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
-        if (!TextUtils.isEmpty(customContentString)) {
-            JSONObject customJson = null;
-            try {
-                customJson = new JSONObject(customContentString);
-                String myvalue = null;
-                if (customJson.isNull("mykey")) {
-                    myvalue = customJson.getString("mykey");
-                }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+//        if (!TextUtils.isEmpty(customContentString)) {
+//            JSONObject customJson = null;
+//            try {
+//                customJson = new JSONObject(customContentString);
+//                String myvalue = null;
+//                if (customJson.isNull("mykey")) {
+//                    myvalue = customJson.getString("mykey");
+//                }
+//            } catch (JSONException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, notifyString);
+//        updateContent(context, notifyString);
     }
 
     /**
@@ -263,10 +276,13 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
 
         Utils.logStringCache = logText;
 
-        Intent intent = new Intent();
-        intent.setClass(context.getApplicationContext(), PushDemoActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.getApplicationContext().startActivity(intent);
+//        Intent intent = new Intent();
+//        intent.setClass(context.getApplicationContext(), PushDemoActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.getApplicationContext().startActivity(intent);
+        if(null!=PushDemoActivity.activity){
+        	PushDemoActivity.activity.updateBindInfo(Utils.user);
+        }
     }
 
 }
