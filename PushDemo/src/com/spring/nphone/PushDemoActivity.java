@@ -1,17 +1,21 @@
 package com.spring.nphone;
 
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.baidu.android.pushservice.CustomPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.google.gson.Gson;
+import com.spring.nphone.db.BindDbHelper;
 import com.spring.nphone.domain.BaseObjce;
 import com.spring.nphone.domain.NotifyObject;
 import com.spring.nphone.domain.NotifyType;
@@ -39,6 +44,24 @@ public class PushDemoActivity extends ActionBarActivity  {
     
     public static PushDemoActivity activity = null;
     
+    OnClickListener onClickListener = new OnClickListener() {
+		@SuppressLint("NewApi")
+		@Override
+		public void onClick(View v) {
+			String str = ((TextView)v).getText().toString().trim();
+			int sdk = android.os.Build.VERSION.SDK_INT;
+			if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+			    clipboard.setText(str);
+			} else {
+			    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE); 
+			    android.content.ClipData clip = android.content.ClipData.newPlainText("text label",str);
+			    clipboard.setPrimaryClip(clip);
+			}
+			Toast.makeText(getApplicationContext(), "复制成功", Toast.LENGTH_SHORT).show();
+		}
+	};
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +75,9 @@ public class PushDemoActivity extends ActionBarActivity  {
         
         userid  = (TextView) this.findViewById(R.id.userid);
         channelid =  (TextView) this.findViewById(R.id.changeId);
+        
+        userid.setOnClickListener(onClickListener);
+        channelid.setOnClickListener(onClickListener);
         // Push: 以apikey的方式登录，一般放在主Activity的onCreate中。
         // 这里把apikey存放于manifest文件中，只是一种存放方式，
         // 您可以用自定义常量等其它方式实现，来替换参数中的Utils.getMetaValue(PushDemoActivity.this,
@@ -132,10 +158,19 @@ public class PushDemoActivity extends ActionBarActivity  {
 				String str = gson.toJson(msg);
 				BaseObjce baseObjce = new BaseObjce();
 				baseObjce.setTitle("new msg");
-				baseObjce.setDescription("fuck you!!");
+				baseObjce.setDescription("test!!!");
 				baseObjce.setCustom_content(str);
-				BaiduServiceClient.getInstance().pushNotification(Utils.user, gson.toJson(baseObjce));
 				
+				List<User> users = BindDbHelper.getInstance(getApplicationContext()).getDevices();
+				if(null==users){
+					users = new ArrayList<User>();
+					users.add(Utils.user);
+				}
+				Iterator<User> iterator = users.iterator();
+				while (iterator.hasNext()) {
+					User user = iterator.next();
+					BaiduServiceClient.getInstance().pushNotification(user, gson.toJson(baseObjce));
+				}
 			}
 		}).start();
     }

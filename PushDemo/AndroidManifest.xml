@@ -4,70 +4,76 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="19"/>
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="19" />
     <!-- Push service 运行需要的权限 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />  
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-     
-    <application android:name="com.spring.nphone.DemoApplication"
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name="com.spring.nphone.DemoApplication"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/Theme.AppCompat"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat" >
         <activity
             android:name="com.spring.nphone.PushDemoActivity"
+            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:label="@string/app_name" >
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.spring.nphone.NotifyClickActivity"
-            android:theme="@style/Theme.AppCompat.Light"
+        <activity
+            android:name="com.spring.nphone.NotifyClickActivity"
             android:parentActivityName="com.spring.nphone.PushDemoActivity"
-            >
+            android:theme="@style/Theme.AppCompat.Light" >
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.spring.nphone.PushDemoActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.spring.nphone.PushDemoActivity" />
         </activity>
-         <activity android:name="com.spring.nphone.DeviceListActivity"
-            android:theme="@style/Theme.AppCompat.Light"
+        <activity
+            android:name="com.spring.nphone.DeviceListActivity"
             android:parentActivityName="com.spring.nphone.PushDemoActivity"
-            >
+            android:theme="@style/Theme.AppCompat.Light" >
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.spring.nphone.PushDemoActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.spring.nphone.PushDemoActivity" />
         </activity>
-         <activity android:name="com.spring.nphone.AddDevice"
-            android:theme="@style/Theme.AppCompat.Light"
+        <activity
+            android:name="com.spring.nphone.AddDevice"
             android:parentActivityName="com.spring.nphone.DeviceListActivity"
-            >
+            android:theme="@style/Theme.AppCompat.Light" >
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.spring.nphone.DeviceListActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.spring.nphone.DeviceListActivity" />
         </activity>
         <activity
             android:name="com.spring.nphone.LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/login" >
         </activity>
-        
         <activity
             android:name="com.spring.nphone.CustomActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden" >
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask" >
         </activity>
 
         <!-- push富媒体，不使用富媒体推送不需要 -->
@@ -83,10 +89,12 @@
             android:launchMode="singleTask" >
         </activity>
         <!-- push富媒体结束 -->
-        
+
+
         <!-- push应用定义消息receiver声明 -->
-        <receiver android:name="com.spring.nphone.MyPushMessageReceiver">
+        <receiver android:name="com.spring.nphone.MyPushMessageReceiver" >
             <intent-filter>
+
                 <!-- 接收push消息 -->
                 <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
                 <!-- 接收bind,unbind,fetch,delete等反馈消息 -->
@@ -94,10 +102,11 @@
                 <action android:name="com.baidu.android.pushservice.action.notification.CLICK" />
             </intent-filter>
         </receiver>
-        
+
         <!-- push必须的receviver和service声明 -->
-        <receiver android:name="com.baidu.android.pushservice.PushServiceReceiver"
-            android:process=":bdservice_v1">
+        <receiver
+            android:name="com.baidu.android.pushservice.PushServiceReceiver"
+            android:process=":bdservice_v1" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -105,29 +114,46 @@
                 <action android:name="com.baidu.android.pushservice.action.media.CLICK" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.baidu.android.pushservice.RegistrationReceiver"
-            android:process=":bdservice_v1">
+        <receiver
+            android:name="com.baidu.android.pushservice.RegistrationReceiver"
+            android:process=":bdservice_v1" >
             <intent-filter>
                 <action android:name="com.baidu.android.pushservice.action.METHOD" />
                 <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
-            </intent-filter>                   
+            </intent-filter>
         </receiver>
+
         <service
             android:name="com.baidu.android.pushservice.PushService"
             android:exported="true"
-            android:process=":bdservice_v1"  >
+            android:process=":bdservice_v1" >
             <intent-filter>
                 <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
             </intent-filter>
         </service>
         <!-- push结束 -->
-        
-		<!-- 在百度开发者中心查询应用的API Key -->
-        <meta-data android:name="api_key" android:value="xoW76TAvoI5UioPtoujBNNNE" />
+
+
+        <!-- 在百度开发者中心查询应用的API Key -->
+        <meta-data
+            android:name="api_key"
+            android:value="xoW76TAvoI5UioPtoujBNNNE" />
+
+        <receiver android:name="com.spring.nphone.broadcast.SmsMessageReceiver" >
+            <intent-filter android:priority="999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.spring.nphone.broadcast.PhoneCallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
