@@ -9,9 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.telephony.SmsMessage;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,42 +24,41 @@ import com.spring.nphone.service.BaiduServiceClient;
 public class SmsMessageReceiver extends BroadcastReceiver {
 
 	public final String TAG = this.getClass().getSimpleName();
-	
-    @Override
-    public void onReceive(final Context context, Intent intent) {
-        Bundle extras = intent.getExtras();
-        if (extras == null)
-            return;
 
-        Object[] pdus = (Object[]) extras.get("pdus");
+	@Override
+	public void onReceive(final Context context, Intent intent) {
+		String content = "";
+		String fromAddress = "";
+		String fromDisplayName = "";
+		Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), new String[] { "_id", "date", "address", "body", "read" }, "date>?",
+				new String[] { System.currentTimeMillis() - 5000 + "" }, "date desc");
+		if (cursor != null) {
+			cursor.moveToFirst();
+			fromAddress = cursor.getString(cursor.getColumnIndex("address"));
+			content = cursor.getString(cursor.getColumnIndex("body"));
+			fromDisplayName = fromAddress;
+			cursor.close();
 
-        for (int i = 0; i < pdus.length; i++) {
-            SmsMessage message = SmsMessage.createFromPdu((byte[]) pdus[i]);
-            String fromAddress = message.getOriginatingAddress();
-            String fromDisplayName = fromAddress;
+			Uri uri;
+			String[] projection;
 
-            Uri uri;
-            String[] projection;
+			try {
+				uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(fromAddress));
+				projection = new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME };
 
-            try {
-            	uri = Uri.withAppendedPath(
-            			ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
-            			Uri.encode(fromAddress));
-            	projection = new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME };
+				// Query the filter URI
+				cursor = context.getContentResolver().query(uri, projection, null, null, null);
+				if (cursor != null) {
+					if (cursor.moveToFirst())
+						fromDisplayName = cursor.getString(0);
+					cursor.close();
+				}
 
-            	// Query the filter URI
-            	Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-            	if (cursor != null) {
-            		if (cursor.moveToFirst())
-            			fromDisplayName = cursor.getString(0);
-            		cursor.close();
-            	}
-
-            } catch (Throwable e) {
-            }
-            final Gson gson = new Gson();
+			} catch (Throwable e) {
+			}
+			final Gson gson = new Gson();
 			NotifyObject msg = new NotifyObject();
-			msg.setContent( message.getMessageBody().toString());
+			msg.setContent(content);
 			msg.setName(fromDisplayName);
 			msg.setNotifyType(NotifyType.MESSAGE);
 			msg.setTime(System.currentTimeMillis());
@@ -69,13 +66,13 @@ public class SmsMessageReceiver extends BroadcastReceiver {
 			String str = gson.toJson(msg);
 			final BaseObjce baseObjce = new BaseObjce();
 			baseObjce.setTitle(fromDisplayName);
-			baseObjce.setDescription(message.getMessageBody().toString());
+			baseObjce.setDescription(content);
 			baseObjce.setCustom_content(str);
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					List<User> users = BindDbHelper.getInstance(context).getDevices();
-					if(users==null){
+					if (users == null) {
 						users = new ArrayList<User>();
 						users.add(Utils.user);
 					}
@@ -87,8 +84,7 @@ public class SmsMessageReceiver extends BroadcastReceiver {
 					}
 				}
 			}).start();
-            
-            break;
-        }
-    }
+
+		}
+	}
 }
