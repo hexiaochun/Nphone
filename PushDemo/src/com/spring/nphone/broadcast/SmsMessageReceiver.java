@@ -1,11 +1,15 @@
 package com.spring.nphone.broadcast;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import org.apache.http.client.utils.URLEncodedUtils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -99,11 +103,9 @@ public class SmsMessageReceiver extends BroadcastReceiver {
 						baseObjce.setDescription(content);
 					}
 					baseObjce.setCustom_content(str);
-
 					List<User> users = BindDbHelper.getInstance(context).getDevices();
 					if (users == null) {
-						users = new ArrayList<User>();
-						users.add(Utils.user);
+						return ;
 					}
 					Iterator<User> iterator = users.iterator();
 					while (iterator.hasNext()) {

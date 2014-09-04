@@ -1,5 +1,8 @@
 package com.spring.nphone;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import com.google.gson.Gson;
 import com.spring.nphone.domain.NotifyObject;
 
@@ -31,15 +34,16 @@ public class NotifyClickActivity extends ActionBarActivity {
 		
 		
 		str = getIntent().getStringExtra(JSONSTR);
+		
 		Gson gson = new Gson();
 		NotifyObject notifyObject = gson.fromJson(str, NotifyObject.class);
 		
-		name.setText(notifyObject.getName());
-		phone.setText(notifyObject.getPhone());
-		type.setText(notifyObject.getNotifyType().name());
-		content.setText(notifyObject.getContent());
-		
-		
+		if(notifyObject!=null){
+			name.setText(notifyObject.getName());
+			phone.setText(notifyObject.getPhone());
+			type.setText(notifyObject.getNotifyType().name());
+			content.setText(notifyObject.getContent());
+		}
 		
 	}
 	

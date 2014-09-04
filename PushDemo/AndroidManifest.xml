@@ -145,9 +145,14 @@
             android:name="api_key"
             android:value="xoW76TAvoI5UioPtoujBNNNE" />
 
-        <receiver android:name="com.spring.nphone.broadcast.SmsMessageReceiver" >
-            <intent-filter >
+        <receiver
+            android:name="com.spring.nphone.broadcast.SmsMessageReceiver"
+            android:permission="android.permission.BROADCAST_SMS" >
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.spring.nphone.broadcast.PhoneCallReceiver" >
